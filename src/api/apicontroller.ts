@@ -351,15 +351,12 @@ export class ApiController {
 				Config.databaseConfig.dataSource,
 				"BeatReal"
 			);
-			if (req.body.newUserName != null) {
-				const usernameInUse = await db.findOne("User", {
-					username: req.body.newUserName,
-				});
-				if (usernameInUse.data.document) {
-					throw "Username in use";
-				}
-			} else {
-				newFields.username = req.body.oldUserName;
+
+			const usernameInUse = await db.findOne("User", {
+				username: req.body.newUserName,
+			});
+			if (usernameInUse.data.document) {
+				throw "Username in use";
 			}
 
 			const user: User = (
